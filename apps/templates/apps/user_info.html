@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Here you can see all the packages you have if you login</h1>
+{% if not_found %}
+<h3>Your Amazon account didn't link to the UPS</h3>
+{% else %}
+{% endif %}
+{% for package in packages%}
+<h5>{{package.id}}</h5>
+<br/>
+{% endfor %}
+{% endblock %}

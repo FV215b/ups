@@ -5,4 +5,5 @@ app_name = "apps"
 urlpatterns = [
     url(r'^all_list/', views.home, name='home'),
     url(r'^tracking_detail/(?P<key>[0-9]+)', views.tracking_detail, name='tracking_detail'),
+    url(r'^user_info/', views.user_info, name='user_info'),
 ]

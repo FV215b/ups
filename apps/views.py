@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core import serializers
-
+from copy import deepcopy
 # Create your views here.
 
 # 0:created  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
@@ -40,3 +40,25 @@ def tracking_detail(request, key):
     tracking = Tracking.objects.get(id=int(key))
     tracking.strStatus = intToStatus(tracking.trunk.status)
     return render(request, "apps/tracking_detail.html", {"tracking":tracking})
+
+@login_required
+def user_info(request):
+    accounts = request.user.amazonaccount.all()
+    if len(accounts) == 0:
+        return render(request, "apps/user_info.html", {"not_found":"true"})
+    AmazonTransactions = []
+    for account in accounts:
+        AmazonTransactions = account.amazontransactions.all()
+    user_packages = []
+    for Atran in AmazonTransactions:
+        #do the combination for user_package
+        user_package = deepcopy(Atran);
+        tracking = Atran.tracking
+        user_package.trackingId = tracking.id
+        user_package.to_x = tracking.to_x
+        user_package.to_y = tracking.to_y
+        user_package.status = tracking.trunk.status
+        user_package.strStatus = intToStatus(tracking.trunk.status)
+        user_packages.append(user_package)
+    print(user_packages)
+    return render(request, "apps/user_info.html", {"packages":user_packages})

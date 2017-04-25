@@ -3,14 +3,9 @@ from django.contrib.auth.models import User
 
 class AmazonAccount(models.Model):
     account = models.CharField(max_length=50);
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="amazonAccount")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="amazonaccount", blank=True, null=True)
     def __str__(self):
-        return self.account + ": " + self.user.username
-    @classmethod
-    def create(cls, user):
-        reporter = cls(user=user)
-        # do something with the book
-        return reporter
+        return self.account + ": "
 
 class Warehouse(models.Model):
     warehouse_id = models.IntegerField()
@@ -30,13 +25,14 @@ class Trunk(models.Model):
 
 class AmazonTransaction(models.Model):
     transaction_id = models.IntegerField()
-    amazonAccount = models.ForeignKey(AmazonAccount, on_delete=models.CASCADE, related_name="amazonTransactions")
+    items_detail = models.CharField(default=0, max_length=1000);
+    amazonAccount = models.ForeignKey(AmazonAccount, on_delete=models.CASCADE, related_name="amazontransactions")
     def __str__(self):
         return "amazon tras Id: " + str(self.transaction_id)
 
 class Tracking(models.Model):
     # tracking id can be created automatically
-    trunk = models.ForeignKey(Trunk, blank=True, null=True)
+    trunk = models.ForeignKey(Trunk, blank=True, null=True, related_name="tracking")
     amazonTransaction = models.OneToOneField(AmazonTransaction, on_delete=models.CASCADE, related_name="tracking")
     to_x = models.IntegerField(blank=True, null=True)
     to_y = models.IntegerField(blank=True, null=True)

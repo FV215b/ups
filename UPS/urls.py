@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^accounts/', include("accounts.urls")),
     url(r'^apps/', include("apps.urls")),
     url(r'^$', views.home, name="home"),
+    url(r'^user_info/', views.user_info, name="user_info"),
+
 ]
