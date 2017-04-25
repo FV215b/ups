@@ -5,7 +5,7 @@ class AmazonAccount(models.Model):
     account = models.CharField(max_length=50);
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="amazonAccount")
     def __str__(self):
-        return self.name
+        return self.account + ": " + self.user.username
     @classmethod
     def create(cls, user):
         reporter = cls(user=user)
@@ -16,6 +16,8 @@ class Warehouse(models.Model):
     warehouse_id = models.IntegerField()
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
+    def __str__(self):
+        return self.warehouse_id 
 
 class Trunk(models.Model):
     trunk_id = models.IntegerField()
@@ -23,7 +25,8 @@ class Trunk(models.Model):
     last_y = models.IntegerField(default=0, null=True)
     # 0:created  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
     status = models.IntegerField(default=0)
-
+    def __str__(self):
+        return self.trunk_id
 
 class AmazonTransaction(models.Model):
     transaction_id = models.IntegerField()

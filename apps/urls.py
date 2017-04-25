@@ -3,6 +3,6 @@ from . import views
 app_name = "apps"
 
 urlpatterns = [
-    url(r'^all_list/', views.show_all_list, name='all_list'),
-    url(r'^search/', views.search, name='search'),
+    url(r'^all_list/', views.home, name='home'),
+    url(r'^search/(?P<key>[0-9]+)', views.search, name='search'),
 ]
