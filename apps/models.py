@@ -17,7 +17,7 @@ class Warehouse(models.Model):
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
     def __str__(self):
-        return self.warehouse_id 
+        return str(self.warehouse_id)
 
 class Trunk(models.Model):
     trunk_id = models.IntegerField()
@@ -26,12 +26,13 @@ class Trunk(models.Model):
     # 0:created  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
     status = models.IntegerField(default=0)
     def __str__(self):
-        return self.trunk_id
+        return str(self.trunk_id)
 
 class AmazonTransaction(models.Model):
     transaction_id = models.IntegerField()
     amazonAccount = models.ForeignKey(AmazonAccount, on_delete=models.CASCADE, related_name="amazonTransactions")
-
+    def __str__(self):
+        return "amazon tras Id: " + str(self.transaction_id)
 
 class Tracking(models.Model):
     # tracking id can be created automatically
@@ -39,3 +40,5 @@ class Tracking(models.Model):
     amazonTransaction = models.OneToOneField(AmazonTransaction, on_delete=models.CASCADE, related_name="tracking")
     to_x = models.IntegerField(blank=True, null=True)
     to_y = models.IntegerField(blank=True, null=True)
+    def __str__(self):
+        return "trunk travel Id: " + str(self.id)

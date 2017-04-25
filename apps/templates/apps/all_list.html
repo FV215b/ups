@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Here are all items stored in our system</h1>
-
+<h3>trackingId : status</h3>
+<br/>
+{% for tracking in trackings %}
+<a href="{%url 'apps:tracking_detail' tracking.id%}"><h5>{{tracking.id}} : {{tracking.strStatus}}</h5></a>
+{% endfor %}
 {% endblock %}

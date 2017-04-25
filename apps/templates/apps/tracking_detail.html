@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Here you can see the tracking detail for your tracking id in our system</h1>
+{% if not_found %}
+<h2>Sorry, we cannot find what you are looking for</h2>
+{% else %}
+<h3>{{tracking.id}} {{tracking.strStatus}}</h3>
+{% endif %}
+
+{% endblock %}

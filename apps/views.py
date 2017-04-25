@@ -26,15 +26,17 @@ def intToStatus(num):
         return "delivered"
 
 def home(request):
-    tracking_ids = []
+    trackings = []
     tracking_statuses = []
     for tracking in Tracking.objects.all():
-        tracking_ids.append(tracking.id)
-        tracking_statuses.append(intToStatus(tracking.trunk.status))
-    return render(request, "apps/all_list.html", {"tracking_ids":tracking_ids,"tracking_statuses":tracking_statuses})
+        tracking.strStatus = intToStatus(tracking.trunk.status)
+        trackings.append(tracking)
+    print(trackings)
+    return render(request, "apps/all_list.html", {"trackings":trackings})
 
-def search(request, key):
-    if not Tracking.objects.filter(id=key).exists():
-        return render(request, "apps/search.html", {"message":"cannot find the tracking id in our system"})
-    tracking = Tracking.objects.get(id=key)
-    return render(request, "apps/search.html", {"message":intToStatus(tracking.trunk.status)})
+def tracking_detail(request, key):
+    if not Tracking.objects.filter(id=int(key)).exists():
+        return render(request, "apps/tracking_detail.html", {"message":"cannot find the tracking id in our system", "not_found":"true"})
+    tracking = Tracking.objects.get(id=int(key))
+    tracking.strStatus = intToStatus(tracking.trunk.status)
+    return render(request, "apps/tracking_detail.html", {"tracking":tracking})
