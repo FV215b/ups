@@ -6,7 +6,16 @@
 {% else %}
 {% endif %}
 {% for package in packages%}
-<h5>{{package.id}}</h5>
+<h4>trackingId: {{package.id}}     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  status: {{package.strStatus}}</h4>
+to arrive: ({{package.to_x}}, {{package.to_y}}) <br/>
+package detail: {{package.items_detail}}<br/>
+{% if package.status < 3 %}
+<form method="POST" action="{% url 'apps:change_destination' package.id%}">
+    {% csrf_token %}
+    new destination:
+    x:<input type="text" name="new_destination_x"/> y:<input type="text" name="new_destination_y"/> <input class="btn btn-primary" type="submit" value="Confirm!!!"/>
+</form>
+{% endif %}
 <br/>
 {% endfor %}
 {% endblock %}

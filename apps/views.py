@@ -62,3 +62,31 @@ def user_info(request):
         user_packages.append(user_package)
     print(user_packages)
     return render(request, "apps/user_info.html", {"packages":user_packages})
+
+@login_required
+def change_destination(request, id):
+    tracking = Tracking.objects.get(id=id)
+    if request.method == "POST":
+        if "new_destination_x" in request.POST:
+            new_destination_x = request.POST["new_destination_x"]
+            if not is_valid_number(new_destination_x):
+                return redirect("user_info")
+            else:
+                tracking.to_x = int(new_destination_x)
+        if "new_destination_y" in request.POST:
+            new_destination_y = request.POST["new_destination_y"]
+            if not is_valid_number(new_destination_y):
+                return redirect("user_info")
+            else:
+                tracking.to_y = int(new_destination_y)
+        tracking.save()
+    return redirect("user_info")
+
+def is_valid_number(value):
+    if value == "NaN":
+        return False
+    try:
+        int(value)
+        return int(value) >= 0
+    except ValueError:
+        return False
