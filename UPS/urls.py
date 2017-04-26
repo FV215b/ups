@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^apps/', include("apps.urls")),
     url(r'^$', views.home, name="home"),
     url(r'^user_info/', views.user_info, name="user_info"),
-
+    url(r'^admin_map/', views.admin_map, name="admin_map"),
 ]

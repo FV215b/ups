@@ -104,3 +104,6 @@ def is_valid_number(value):
         return int(value) >= 0
     except ValueError:
         return False
+
+def admin_map(request):
+    return render(request, "apps/admin_map.html") 
