@@ -25,11 +25,19 @@ def intToStatus(num):
     else:
         return "delivered"
 
+def getStatus(tracking):
+    if tracking.finished:
+        return "delivered"
+    elif not tracking.assigned_trunk:
+        return "created"
+    else:
+        return intToStatus(tracking.trunk.status)
+
 def home(request):
     trackings = []
     tracking_statuses = []
     for tracking in Tracking.objects.all():
-        tracking.strStatus = intToStatus(tracking.trunk.status)
+        tracking.strStatus = getStatus(tracking)
         trackings.append(tracking)
     print(trackings)
     return render(request, "apps/all_list.html", {"trackings":trackings})
@@ -38,7 +46,7 @@ def tracking_detail(request, key):
     if not Tracking.objects.filter(id=int(key)).exists():
         return render(request, "apps/tracking_detail.html", {"message":"cannot find the tracking id in our system", "not_found":"true"})
     tracking = Tracking.objects.get(id=int(key))
-    tracking.strStatus = intToStatus(tracking.trunk.status)
+    tracking.strStatus = getStatus(tracking)
     return render(request, "apps/tracking_detail.html", {"tracking":tracking})
 
 @login_required
@@ -57,8 +65,14 @@ def user_info(request):
         user_package.trackingId = tracking.id
         user_package.to_x = tracking.to_x
         user_package.to_y = tracking.to_y
-        user_package.status = tracking.trunk.status
-        user_package.strStatus = intToStatus(tracking.trunk.status)
+        if tracking.finished:
+            user_package.strStatus = "delivered"
+            user_package.trunk_id = tracking.trunk.trunk_id
+        elif not tracking.assigned_trunk:
+            user_package.strStatus = "created"
+        else:
+            user_package.strStatus = intToStatus(tracking.trunk.status)
+            user_package.trunk_id = tracking.trunk.trunk_id
         user_packages.append(user_package)
     print(user_packages)
     return render(request, "apps/user_info.html", {"packages":user_packages})

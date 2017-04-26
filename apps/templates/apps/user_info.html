@@ -9,7 +9,10 @@
 <h4>trackingId: {{package.id}}     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  status: {{package.strStatus}}</h4>
 to arrive: ({{package.to_x}}, {{package.to_y}}) <br/>
 package detail: {{package.items_detail}}<br/>
-{% if package.status < 3 %}
+{% if package.strStatus != "created" %}
+trunk id: {{package.trunk_id}}<br/>
+{% endif %}
+{% if package.strStatus != "delivered" and package.strStatus != "out for delivery"%}
 <form method="POST" action="{% url 'apps:change_destination' package.id%}">
     {% csrf_token %}
     new destination:

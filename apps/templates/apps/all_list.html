@@ -4,15 +4,15 @@
     function search() {
         var user_input = document.getElementById("input_box").value;
         if (!user_input.match(/^\d+$/)) {
-            alert("please enter a valid number")
+            alert("please enter a valid number");
             return
         }
         window.location.href = "apps/tracking_detail/" + user_input;
     };
 </script>
 <h1>Here are all items stored in our system</h1>
-<input type="text" id="input_box" />
-<input type="button" onclick="search();" name="search" id="search_button" value="search" />
+<input type="text" id="input_box" />&nbsp&nbsp&nbsp&nbsp
+<input type="button" onclick="search();" name="search" class="btn btn-primary" id="search_button" value="search" />
 <h3>trackingId : status</h3>
 <br/>
 {% for tracking in trackings %}
