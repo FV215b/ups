@@ -101,9 +101,20 @@ def is_valid_number(value):
         return False
     try:
         int(value)
-        return int(value) >= 0
     except ValueError:
         return False
 
 def admin_map(request):
-    return render(request, "apps/admin_map.html") 
+    temp_trunks = Trunk.objects.all()
+    trunks = []
+    for temp_trunk in temp_trunks:
+        trunk = deepcopy(temp_trunk)
+        trunk.strStatus = "Trunk id: " + str(trunk.trunk_id) + "  "+ intToStatus(trunk.status)
+        trunks.append(trunk)
+    temp_warehouses = Warehouse.objects.all()
+    warehouses = []
+    for temp_warehouse in temp_warehouses:
+        warehouse = deepcopy(temp_warehouse)
+        warehouse.strStatus = "Warehouse id: " + str(warehouse.warehouse_id)
+        warehouses.append(warehouse)
+    return render(request, "apps/admin_map.html", {"trunks":trunks, "warehouses":warehouses})

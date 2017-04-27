@@ -1,35 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Here you can see the map for all trunks</h1>
-<canvas id="canvas" width="650px" height="650px" style="background: #fff; margin:20px"></canvas>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<div id="myDiv" style="width: 1000px; height: 1000px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+<script>
+    var trace1 = {
+//        x: [-1000, 3000, 99, -300, -250],
+//        y: [1000, -230, 5000, -3700, -4000],
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Trunk',
+//        text: ['A-1', 'A-2', 'A-3', 'A-4', 'A-5'],
+        marker: { size: 12 }
+    };
+    trace1.x = [];
+    trace1.y = [];
+    trace1.text = [];
+    {% for trunk in trunks %}
+        trace1.x.push({{trunk.last_x}});
+        trace1.y.push({{trunk.last_y}});
+        trace1.text.push("{{trunk.strStatus}}");
+    {% endfor %}
 
-<script type="text/javascript" language="javascript">
-    // Box width
-    var bw = 600;
-    // Box height
-    var bh = 600;
-    // Padding
-    var p = 2;
+    var trace2 = {
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Warehouse',
+        marker: { size: 12 }
+    };
 
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    function drawBoard(){
-        for (var x = 0; x <= bw; x += 20) {
-            context.moveTo(0.5 + x + p, p);
-            context.lineTo(0.5 + x + p, bh + p);
-        }
+    trace2.x = [];
+    trace2.y = [];
+    trace2.text = [];
+    {% for warehouse in warehouses %}
+        trace2.x.push({{warehouse.x}});
+        trace2.y.push({{warehouse.y}});
+        trace2.text.push("{{warehouse.strStatus}}");
+    {% endfor %}
 
+    var data = [ trace1,trace2 ];
 
-        for (var x = 0; x <= bh; x += 20) {
-            context.moveTo(p, 0.5 + x + p);
-            context.lineTo(bw + p, 0.5 + x + p);
-        }
+    var layout = {
+        xaxis: {
+            range: [ -6000, 6000 ]
+        },
+        yaxis: {
+            range: [-6000, 6000]
+        },
+        title:'Trunk in the world'
+    };
 
-        context.strokeStyle = "black";
-        context.stroke();
-    }
-
-    drawBoard();
+    Plotly.newPlot('myDiv', data, layout);
 </script>
-
 {% endblock %}
