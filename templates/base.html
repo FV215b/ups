@@ -31,6 +31,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
+                    <li><a href="{%url 'accounts:account_detail'%}">Account Detail</a></li>
                     <li><a href="#" onclick="document.getElementById('logoutForm').submit()">logout</a></li>
                     <form id="logoutForm" method="POST" action="{% url 'accounts:Logout' %}">
                         {% csrf_token %}
@@ -39,6 +40,8 @@
                 {% else %}
                     <li><a href="{%url 'accounts:Login'%}">Login</a></li>
                     <li><a href="{%url 'accounts:SignUp'%}">SignUp</a></li>
+
+
                 {% endif %}
             </ul>
         </div>

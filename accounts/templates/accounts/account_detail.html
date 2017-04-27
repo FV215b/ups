@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>You can see the account detail here</h1>
+    <b>username:</b> {{user.username}} <br/>
+    <b>balance:</b> {{amount}} <br/><br/>
+    <form method="POST" action="{% url 'accounts:charge_account' %}">
+      {% csrf_token %}
+      <input type="number" name="charge_amount" required/>
+      <input class="btn btn-primary" type="submit" value="add to account"/>
+    </form>
+{% endblock %}

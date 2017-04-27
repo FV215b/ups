@@ -126,6 +126,10 @@ def add_prime(request, id):
     print("123")
     tracking = Tracking.objects.get(id=id)
     if request.method == "POST":
-        tracking.is_prime = True
-        tracking.save()
+        balance = request.user.balance.all()[0] #get the balance for this user
+        if balance.balance >= 20:
+            balance.balance -= 20
+            balance.save()
+            tracking.is_prime = True
+            tracking.save()
     return redirect("user_info")
