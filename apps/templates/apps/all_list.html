@@ -13,8 +13,8 @@
 <h1>Here are all items stored in our system</h1>
 <input type="text" id="input_box" />&nbsp&nbsp&nbsp&nbsp
 <input type="button" onclick="search();" name="search" class="btn btn-primary" id="search_button" value="search" />
-<h3>trackingId : status</h3>
 <br/>
+<h4>trackingId : status</h4>
 {% for tracking in trackings %}
 <a href="{%url 'apps:tracking_detail' tracking.id%}"><h5>{{tracking.id}} : {{tracking.strStatus}}</h5></a>
 {% endfor %}

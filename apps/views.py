@@ -65,6 +65,7 @@ def user_info(request):
         user_package.trackingId = tracking.id
         user_package.to_x = tracking.to_x
         user_package.to_y = tracking.to_y
+        user_package.is_prime = tracking.is_prime
         if tracking.finished:
             user_package.strStatus = "delivered"
             user_package.trunk_id = tracking.trunk.trunk_id
@@ -101,6 +102,7 @@ def is_valid_number(value):
         return False
     try:
         int(value)
+        return True
     except ValueError:
         return False
 
@@ -118,3 +120,12 @@ def admin_map(request):
         warehouse.strStatus = "Warehouse id: " + str(warehouse.warehouse_id)
         warehouses.append(warehouse)
     return render(request, "apps/admin_map.html", {"trunks":trunks, "warehouses":warehouses})
+
+@login_required
+def add_prime(request, id):
+    print("123")
+    tracking = Tracking.objects.get(id=id)
+    if request.method == "POST":
+        tracking.is_prime = True
+        tracking.save()
+    return redirect("user_info")

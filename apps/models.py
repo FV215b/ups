@@ -38,5 +38,6 @@ class Tracking(models.Model):
     to_y = models.IntegerField(blank=True, null=True)
     finished = models.BooleanField(default=False)
     assigned_trunk = models.BooleanField(default=False)
+    is_prime = models.BooleanField(default=False)
     def __str__(self):
         return "trunk travel Id: " + str(self.id)
