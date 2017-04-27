@@ -22,7 +22,7 @@ trunk id: {{package.trunk_id}}<br/>
 <form method="POST" action="{% url 'apps:change_destination' package.id%}">
     {% csrf_token %}
     new destination:
-    x:<input type="text" name="new_destination_x"/> y:<input type="text" name="new_destination_y"/> <input class="btn btn-primary" type="submit" value="Confirm!!!"/>
+    x:<input type="number" name="new_destination_x" style="width:60px;"/> &nbsp&nbsp y:<input type="number" name="new_destination_y" style="width:60px;"/> <input class="btn btn-primary" type="submit" value="Confirm!!!"/>
 </form>
 {% endif %}
 <br/>

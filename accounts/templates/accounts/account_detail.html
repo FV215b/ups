@@ -5,7 +5,8 @@
     <b>balance:</b> {{amount}} <br/><br/>
     <form method="POST" action="{% url 'accounts:charge_account' %}">
       {% csrf_token %}
-      <input type="number" name="charge_amount" required/>
+      $
+      <input type="number" name="charge_amount" style="width:70px;" required/>&nbsp&nbsp
       <input class="btn btn-primary" type="submit" value="add to account"/>
     </form>
 {% endblock %}
