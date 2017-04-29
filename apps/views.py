@@ -18,7 +18,7 @@ import json
 # 0:created  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
 def intToStatus(num):
     if num == 0:
-        return "created"
+        return "idle"
     elif num == 1:
         return "in the way to warehouse"
     elif num == 2:
