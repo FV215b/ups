@@ -211,10 +211,13 @@ def arrive_warehouse(request):
 
 @csrf_exempt
 def request_deliver(request):
-    #get the x,y and send to deamon
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    return 123
+    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk.status = 3
+    trunk.save()
+    tracking = Tracking.objects.get(tracking_id=trunk.tracking_id)
+    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": tracking.tracking_id, "to_x": tracking.to_x, "to_y": tracking.to_y})
 
 @csrf_exempt
 def finish_deliver(request):
