@@ -15,5 +15,4 @@ urlpatterns = [
     url(r'^request_deliver', views.request_deliver, name='request_deliver'),
     url(r'^search_trunk', views.search_trunk, name='search_trunk'),
     url(r'^finish_deliver', views.finish_deliver, name='finish_deliver'),
-
 ]

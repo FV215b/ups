@@ -21,8 +21,22 @@
     {% endfor %}
 
 
+    var trace2 = {
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Warehouse',
+        marker: { size: 12 }
+    };
+    trace2.x = [];
+    trace2.y = [];
+    trace2.text = [];
+    {% for warehouse in warehouses %}
+    trace2.x.push({{warehouse.x}});
+    trace2.y.push({{warehouse.y}});
+    trace2.text.push("{{warehouse.strStatus}}");
+    {% endfor %}
 
-    var data = [ trace1 ];
+    var data = [ trace1,trace2 ];
 
     var layout = {
         xaxis: {

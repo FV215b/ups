@@ -18,7 +18,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="all_list.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="all_list.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/all_list.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="380">
@@ -28,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin_map.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="admin_map.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/admin_map.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+            <state relative-caret-position="448">
+              <caret line="35" column="38" lean-forward="false" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -90,8 +90,8 @@
         <option value="$PROJECT_DIR$/plotly.js" />
         <option value="$PROJECT_DIR$/tracking_detail.html" />
         <option value="$PROJECT_DIR$/user_info.html" />
-        <option value="$PROJECT_DIR$/admin_map.html" />
         <option value="$PROJECT_DIR$/all_list.html" />
+        <option value="$PROJECT_DIR$/admin_map.html" />
       </list>
     </option>
   </component>
@@ -102,8 +102,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="109" />
-    <option name="y" value="283" />
+    <option name="x" value="-83" />
+    <option name="y" value="410" />
     <option name="width" value="1276" />
     <option name="height" value="777" />
   </component>
@@ -219,15 +219,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1493145614136</updated>
-      <workItem from="1493145616954" duration="26212000" />
+      <workItem from="1493145616954" duration="26284000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26212000" />
+    <option name="totallyTimeSpent" value="26284000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="109" y="283" width="1276" height="777" extended-state="1" />
+    <frame x="-83" y="410" width="1276" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24940239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -296,21 +296,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_map.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/all_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="19" column="79" lean-forward="false" selection-start-line="19" selection-start-column="79" selection-end-line="19" selection-end-column="79" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin_map.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="35" column="38" lean-forward="false" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

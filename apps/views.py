@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Trunk
 from .models import AmazonTransaction
-from .models import Tracking
+from .models import Tracking, Warehouse
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -111,7 +111,13 @@ def admin_map(request):
         trunk.strStatus = "Trunk id: " + str(trunk.trunk_id) + "  "+ intToStatus(trunk.status)
         trunks.append(trunk)
 
-    return render(request, "apps/admin_map.html", {"trunks":trunks})
+    temp_warehouses = Warehouse.objects.all()
+    warehouses = []
+    for temp_warehouse in temp_warehouses:
+        warehouse = deepcopy(temp_warehouse)
+        warehouse.strStatus = "Warehouse id: " + str(warehouse.warehouse_id)
+        warehouses.append(warehouse)
+    return render(request, "apps/admin_map.html", {"trunks":trunks, "warehouses":warehouses})
 
 @login_required
 def add_prime(request, id):
@@ -183,6 +189,7 @@ def arrive_warehouse(request):
 
 @csrf_exempt
 def request_deliver(request):
+    #get the x,y and send to deamon
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     return 123

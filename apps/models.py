@@ -1,10 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Warehouse(models.Model):
+    warehouse_id = models.IntegerField()
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+
 class Trunk(models.Model):
     trunk_id = models.IntegerField()
-    last_x = models.IntegerField(default=0, null=True) #record the last pos it arrived
-    last_y = models.IntegerField(default=0, null=True)
+    last_x = models.IntegerField(default=0) #record the last pos it arrived
+    last_y = models.IntegerField(default=0)
     # 0:idle  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
     status = models.IntegerField(default=0)
     def __str__(self):
