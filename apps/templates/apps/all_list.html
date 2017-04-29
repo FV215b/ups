@@ -17,6 +17,6 @@ tracking Id &nbsp&nbsp
 <br/>
 <h4>trackingId : status</h4>
 {% for tracking in trackings %}
-<a href="{%url 'apps:tracking_detail' tracking.id%}"><h5>{{tracking.id}} : {{tracking.strStatus}}</h5></a>
+<a href="{%url 'apps:tracking_detail' tracking.id%}"><h5>{{tracking.tracking_id}} : {{tracking.strStatus}}</h5></a>
 {% endfor %}
 {% endblock %}

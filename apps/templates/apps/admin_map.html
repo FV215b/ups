@@ -3,7 +3,7 @@
 <h1>You can see all trunks and warehouses here </h1>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<div id="myDiv" style="width: 1000px; height: 1000px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+<div id="myDiv" style="width: 1200px; height: 1000px;"><!-- Plotly chart will be drawn inside this DIV --></div>
 <script>
     var trace1 = {
         mode: 'markers',
@@ -21,22 +21,8 @@
     {% endfor %}
 
 
-    var trace2 = {
-        mode: 'markers',
-        type: 'scatter',
-        name: 'Warehouse',
-        marker: { size: 12 }
-    };
-    trace2.x = [];
-    trace2.y = [];
-    trace2.text = [];
-    {% for warehouse in warehouses %}
-        trace2.x.push({{warehouse.x}});
-        trace2.y.push({{warehouse.y}});
-        trace2.text.push("{{warehouse.strStatus}}");
-    {% endfor %}
 
-    var data = [ trace1,trace2 ];
+    var data = [ trace1 ];
 
     var layout = {
         xaxis: {

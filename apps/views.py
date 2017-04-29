@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import AmazonAccount
-from .models import Warehouse
+from django.views.decorators.csrf import csrf_exempt
 from .models import Trunk
 from .models import AmazonTransaction
 from .models import Tracking
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core import serializers
 from copy import deepcopy
+from django.http import JsonResponse
+from django.core import serializers
+import json
 # Create your views here.
 
 # 0:created  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
@@ -51,36 +54,32 @@ def tracking_detail(request, key):
 
 @login_required
 def user_info(request):
-    accounts = request.user.amazonaccount.all()
-    if len(accounts) == 0:
-        return render(request, "apps/user_info.html", {"not_found":"true"})
-    AmazonTransactions = []
-    for account in accounts:
-        AmazonTransactions = account.amazontransactions.all()
+    trackings = request.user.trackings.all()
     user_packages = []
-    for Atran in AmazonTransactions:
+    for tracking in trackings:
         #do the combination for user_package
-        user_package = deepcopy(Atran);
-        tracking = Atran.tracking
-        user_package.trackingId = tracking.id
-        user_package.to_x = tracking.to_x
-        user_package.to_y = tracking.to_y
-        user_package.is_prime = tracking.is_prime
-        if tracking.finished:
-            user_package.strStatus = "delivered"
-            user_package.trunk_id = tracking.trunk.trunk_id
-        elif not tracking.assigned_trunk:
-            user_package.strStatus = "created"
-        else:
-            user_package.strStatus = intToStatus(tracking.trunk.status)
-            user_package.trunk_id = tracking.trunk.trunk_id
-        user_packages.append(user_package)
+        for Atran in tracking.amazontransactions.all():
+            user_package = deepcopy(Atran);
+            tracking = Atran.tracking
+            user_package.trackingId = tracking.id
+            user_package.to_x = tracking.to_x
+            user_package.to_y = tracking.to_y
+            user_package.is_prime = tracking.is_prime
+            if tracking.finished:
+                user_package.strStatus = "delivered"
+                user_package.trunk_id = tracking.trunk.trunk_id
+            elif not tracking.assigned_trunk:
+                user_package.strStatus = "created"
+            else:
+                user_package.strStatus = intToStatus(tracking.trunk.status)
+                user_package.trunk_id = tracking.trunk.trunk_id
+            user_packages.append(user_package)
     print(user_packages)
     return render(request, "apps/user_info.html", {"packages":user_packages})
 
 @login_required
 def change_destination(request, id):
-    tracking = Tracking.objects.get(id=id)
+    tracking = Tracking.objects.get(tracking_id=id)
     if request.method == "POST":
         if "new_destination_x" in request.POST:
             new_destination_x = request.POST["new_destination_x"]
@@ -113,13 +112,8 @@ def admin_map(request):
         trunk = deepcopy(temp_trunk)
         trunk.strStatus = "Trunk id: " + str(trunk.trunk_id) + "  "+ intToStatus(trunk.status)
         trunks.append(trunk)
-    temp_warehouses = Warehouse.objects.all()
-    warehouses = []
-    for temp_warehouse in temp_warehouses:
-        warehouse = deepcopy(temp_warehouse)
-        warehouse.strStatus = "Warehouse id: " + str(warehouse.warehouse_id)
-        warehouses.append(warehouse)
-    return render(request, "apps/admin_map.html", {"trunks":trunks, "warehouses":warehouses})
+
+    return render(request, "apps/admin_map.html", {"trunks":trunks})
 
 @login_required
 def add_prime(request, id):
@@ -133,3 +127,38 @@ def add_prime(request, id):
             tracking.is_prime = True
             tracking.save()
     return redirect("user_info")
+
+@csrf_exempt
+def request_pickup(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    tracking = Tracking()
+    if "shipid" in body:
+        tracking.tracking_id = body["shipid"]
+    if "whid" in body:
+        tracking.warehouse_id = body["whid"]
+    if "x" in body:
+        tracking.to_x = body["x"]
+    if "y" in body:
+        tracking.to_y = body["y"]
+    if ("upsAccount" in body) and (User.objects.filter(username=body["upsAccount"]).exists()):
+        tracking.user = User.objects.get(username=body["upsAccount"])
+    tracking.save()
+    if "products" in body:
+        for product_json in body["products"]:
+            product = tracking.amazontransactions.create()
+            product.product_id = product_json["product_id"]
+            product.count = product_json["count"]
+            product.items_detail = product_json["description"]
+            product.save()
+    return JsonResponse({'status': 'success'})
+
+def arrive_warehouse(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    return 123
+
+def request_load(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    return 123
