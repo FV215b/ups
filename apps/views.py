@@ -46,9 +46,9 @@ def home(request):
     return render(request, "apps/all_list.html", {"trackings":trackings})
 
 def tracking_detail(request, key):
-    if not Tracking.objects.filter(id=int(key)).exists():
+    if not Tracking.objects.filter(tracking_id=int(key)).exists():
         return render(request, "apps/tracking_detail.html", {"message":"cannot find the tracking id in our system", "not_found":"true"})
-    tracking = Tracking.objects.get(id=int(key))
+    tracking = Tracking.objects.get(tracking_id=int(key))
     tracking.strStatus = getStatus(tracking)
     return render(request, "apps/tracking_detail.html", {"tracking":tracking})
 
