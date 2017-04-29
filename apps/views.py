@@ -58,22 +58,20 @@ def user_info(request):
     user_packages = []
     for tracking in trackings:
         #do the combination for user_package
+        user_package = deepcopy(tracking)
+        if tracking.finished:
+            user_package.strStatus = "delivered"
+            user_package.trunk_id = tracking.trunk.trunk_id
+        elif not tracking.assigned_trunk:
+            user_package.strStatus = "created"
+        else:
+            user_package.strStatus = intToStatus(tracking.trunk.status)
+            user_package.trunk_id = tracking.trunk.trunk_id
+        user_package.items = []
         for Atran in tracking.amazontransactions.all():
-            user_package = deepcopy(Atran);
-            tracking = Atran.tracking
-            user_package.trackingId = tracking.id
-            user_package.to_x = tracking.to_x
-            user_package.to_y = tracking.to_y
-            user_package.is_prime = tracking.is_prime
-            if tracking.finished:
-                user_package.strStatus = "delivered"
-                user_package.trunk_id = tracking.trunk.trunk_id
-            elif not tracking.assigned_trunk:
-                user_package.strStatus = "created"
-            else:
-                user_package.strStatus = intToStatus(tracking.trunk.status)
-                user_package.trunk_id = tracking.trunk.trunk_id
-            user_packages.append(user_package)
+            item = deepcopy(Atran);
+            user_package.items.append(item)
+        user_packages.append(user_package)
     print(user_packages)
     return render(request, "apps/user_info.html", {"packages":user_packages})
 
