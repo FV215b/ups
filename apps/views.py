@@ -34,7 +34,7 @@ def getStatus(tracking):
     elif not tracking.assigned_trunk:
         return "created"
     else:
-        return intToStatus(tracking.trunk.status)
+        return intToStatus(Trunk.objects.get(trunk_id=tracking.trunk_id).status)
 
 def home(request):
     trackings = []
@@ -61,12 +61,12 @@ def user_info(request):
         user_package = deepcopy(tracking)
         if tracking.finished:
             user_package.strStatus = "delivered"
-            user_package.trunk_id = tracking.trunk.trunk_id
+            user_package.trunk_id = tracking.trunk_id
         elif not tracking.assigned_trunk:
             user_package.strStatus = "created"
         else:
-            user_package.strStatus = intToStatus(tracking.trunk.status)
-            user_package.trunk_id = tracking.trunk.trunk_id
+            user_package.strStatus = intToStatus(Trunk.objects.get(trunk_id=tracking.trunk_id).status)
+            user_package.trunk_id = tracking.trunk_id
         user_package.items = []
         for Atran in tracking.amazontransactions.all():
             item = deepcopy(Atran);
@@ -183,9 +183,10 @@ def search_trunk(request):
         else:
             trunk = Trunk.objects.filter(status=0).all()[0]
         trunk.status = 1
+        trunk.tracking_id = tracking.tracking_id
         trunk.save()
-        tracking.trunk = trunk
         tracking.assigned_trunk = True
+        tracking.trunk_id = trunk.trunk_id
         tracking.save()
         return JsonResponse({'trunk_id': trunk.trunk_id, "is_prime": tracking.is_prime})
     else:
@@ -200,7 +201,13 @@ def arrive_warehouse(request):
     trunk.last_x = body["x"]
     trunk.last_y = body["y"]
     trunk.save()
-    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": trunk.tracking.tracking_id ,'warehouse_id': trunk.tracking.warehouse_id})
+    tracking = Tracking.objects.get(tracking_id=trunk.tracking_id)
+    if not Warehouse.objects.filter(warehouse_id=tracking.warehouse_id).exists():
+        warehouse = Warehouse.create(tracking.warehouse_id)
+        warehouse.x = body["x"]
+        warehouse.y = body["y"]
+        warehouse.save()
+    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": tracking.tracking_id ,'warehouse_id': tracking.warehouse_id})
 
 @csrf_exempt
 def request_deliver(request):
@@ -218,7 +225,7 @@ def finish_deliver(request):
     trunk.last_x = body["x"]
     trunk.last_y = body["y"]
     trunk.save()
-    tracking = trunk.tracking
+    tracking = Tracking.objects.get(tracking_id=trunk.tracking_id)
     tracking.finished = True
     tracking.save()
     return JsonResponse({"status": "success"})

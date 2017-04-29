@@ -28,7 +28,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin_map.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="admin_map.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin_map.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="448">
@@ -43,23 +43,21 @@
       <file leaf-file-name="tracking_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tracking_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="200">
               <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user_info.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="user_info.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/user_info.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="5" column="10" lean-forward="false" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+            <state relative-caret-position="240">
+              <caret line="19" column="12" lean-forward="true" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#form#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#input#1;n#form#1;n#!!top" expanded="true" />
-                <marker date="1493429309000" expanded="true" signature="237:260" ph="..." />
-                <marker date="1493429309000" expanded="true" signature="1103:1374" ph="..." />
               </folding>
             </state>
           </provider>
@@ -89,9 +87,9 @@
         <option value="$PROJECT_DIR$/search.html" />
         <option value="$PROJECT_DIR$/plotly.js" />
         <option value="$PROJECT_DIR$/tracking_detail.html" />
-        <option value="$PROJECT_DIR$/user_info.html" />
         <option value="$PROJECT_DIR$/all_list.html" />
         <option value="$PROJECT_DIR$/admin_map.html" />
+        <option value="$PROJECT_DIR$/user_info.html" />
       </list>
     </option>
   </component>
@@ -102,8 +100,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-83" />
-    <option name="y" value="410" />
+    <option name="x" value="-5" />
+    <option name="y" value="23" />
     <option name="width" value="1276" />
     <option name="height" value="777" />
   </component>
@@ -219,15 +217,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1493145614136</updated>
-      <workItem from="1493145616954" duration="26284000" />
+      <workItem from="1493145616954" duration="26861000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26284000" />
+    <option name="totallyTimeSpent" value="26861000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-83" y="410" width="1276" height="777" extended-state="0" />
+    <frame x="-5" y="23" width="1276" height="777" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24940239" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -275,27 +273,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/user_info.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="10" lean-forward="false" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#form#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#1;n#form#1;n#!!top" expanded="true" />
-            <marker date="1493429309000" expanded="true" signature="237:260" ph="..." />
-            <marker date="1493429309000" expanded="true" signature="1103:1374" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tracking_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/all_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
@@ -310,6 +287,25 @@
           <caret line="35" column="38" lean-forward="false" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
           <folding>
             <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tracking_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/user_info.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="19" column="12" lean-forward="true" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#form#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#1;n#form#1;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

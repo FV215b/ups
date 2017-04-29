@@ -8,7 +8,7 @@
 {% for package in packages%}
 <h4>trackingId: {{package.tracking_id}}     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  status: {{package.strStatus}}
 {% if package.is_prime%}&nbsp&nbsp&nbsp(Prime) {%endif%}</h4>
-{% if not package.is_prime %} <form method="POST" action="{% url 'apps:add_prime' package.tracking_id%}">
+{% if not package.is_prime and package.strStatus != "delivered" and package.strStatus != "out for delivery" %} <form method="POST" action="{% url 'apps:add_prime' package.tracking_id%}">
         {% csrf_token %}<input class="btn btn-success" type="submit" value="Buy Prime"/>
     </form>
     {% endif %}
