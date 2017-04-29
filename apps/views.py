@@ -160,13 +160,28 @@ def request_pickup(request):
 def initial_trunks(request):
     return 123
 
+def find_best_trunk(x, y):
+    trunks = Trunk.objects.filter(status=0).all()
+    best_trunk = {}
+    for trunk in trunks:
+        if not best_trunk:
+            best_trunk = trunk
+        elif ((abs(trunk.last_x - x) + abs(trunk.last_y - y)) < (abs(best_trunk.last_x - x) + abs(best_trunk.last_y - y))):
+            best_trunk = trunk
+    return best_trunk
+
 @csrf_exempt
 def search_trunk(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     tracking = Tracking.objects.get(tracking_id=body["tracking_id"])
     if Trunk.objects.filter(status=0).exists(): #if some trunks are idle
-        trunk = Trunk.objects.filter(status=0).all()[0]
+        trunk = {}
+        if Warehouse.objects.filter(warehouse_id=tracking.warehouse_id).exists():
+            warehouse = Warehouse.objects.get(warehouse_id=tracking.warehouse_id)
+            trunk = find_best_trunk(warehouse.x, warehouse.y)
+        else:
+            trunk = Trunk.objects.filter(status=0).all()[0]
         trunk.status = 1
         trunk.save()
         tracking.trunk = trunk
