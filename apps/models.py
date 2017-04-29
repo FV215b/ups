@@ -5,7 +5,7 @@ class Trunk(models.Model):
     trunk_id = models.IntegerField()
     last_x = models.IntegerField(default=0, null=True) #record the last pos it arrived
     last_y = models.IntegerField(default=0, null=True)
-    # 1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
+    # 0:idle  1:trunk to warehouse  2:trunk waiting in warehouse 3:out for delivery
     status = models.IntegerField(default=0)
     def __str__(self):
         return str(self.trunk_id)
@@ -13,7 +13,7 @@ class Trunk(models.Model):
 class Tracking(models.Model):
     # tracking id can be created automatically
     tracking_id = models.IntegerField(default=0)
-    trunk = models.ForeignKey(Trunk, blank=True, null=True, related_name="trackings")
+    trunk = models.OneToOneField(Trunk, blank=True, null=True, related_name="tracking")
     to_x = models.IntegerField(blank=True, null=True)
     to_y = models.IntegerField(blank=True, null=True)
     finished = models.BooleanField(default=False)

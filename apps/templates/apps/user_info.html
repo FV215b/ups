@@ -16,9 +16,9 @@
 to arrive: ({{package.to_x}}, {{package.to_y}}) <br/>
 <h4>items:</h4>
 {% for item in package.items %}
-  count : {{item.count}} <br/>
-  package detail: {{item.items_detail}}<br/>
+  package detail: {{item.items_detail}} &nbsp&nbsp&nbsp count : {{item.count}} <br/>
 {% endfor %}
+<br/>
 {% if package.strStatus != "created" %}
 trunk id: {{package.trunk_id}}<br/>
 {% endif %}

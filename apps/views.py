@@ -115,8 +115,7 @@ def admin_map(request):
 
 @login_required
 def add_prime(request, id):
-    print("123")
-    tracking = Tracking.objects.get(id=id)
+    tracking = Tracking.objects.get(tracking_id=id)
     if request.method == "POST":
         balance = request.user.balance.all()[0] #get the balance for this user
         if balance.balance >= 20:
@@ -149,14 +148,55 @@ def request_pickup(request):
             product.count = product_json["count"]
             product.items_detail = product_json["description"]
             product.save()
-    return JsonResponse({'status': 'success'})
+    return JsonResponse({'tracking_id': body["shipid"]})
 
+@csrf_exempt
+def initial_trunks(request):
+    return 123
+
+@csrf_exempt
+def search_trunk(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    tracking = Tracking.objects.get(tracking_id=body["tracking_id"])
+    if Trunk.objects.filter(status=0).exists(): #if some trunks are idle
+        trunk = Trunk.objects.filter(status=0).all()[0]
+        trunk.status = 1
+        trunk.save()
+        tracking.trunk = trunk
+        tracking.assigned_trunk = True
+        tracking.save()
+        return JsonResponse({'trunk_id': trunk.trunk_id, "is_prime": tracking.is_prime})
+    else:
+        return JsonResponse({'trunk_id': -1, "is_prime": tracking.is_prime})
+
+@csrf_exempt
 def arrive_warehouse(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    return 123
+    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk.status = 2
+    trunk.last_x = body["x"]
+    trunk.last_y = body["y"]
+    trunk.save()
+    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": trunk.tracking.tracking_id ,'warehouse_id': trunk.tracking.warehouse_id})
 
-def request_load(request):
+@csrf_exempt
+def request_deliver(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     return 123
+
+@csrf_exempt
+def finish_deliver(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk.status = 0
+    trunk.last_x = body["x"]
+    trunk.last_y = body["y"]
+    trunk.save()
+    tracking = trunk.tracking
+    tracking.finished = True
+    tracking.save()
+    return JsonResponse({"status": "success"})
