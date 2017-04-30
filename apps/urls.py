@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^request_pickup', views.request_pickup, name='request_pickup'),
     url(r'^arrive_warehouse', views.arrive_warehouse, name='arrive_warehouse'),
     url(r'^request_deliver', views.request_deliver, name='request_deliver'),
-    url(r'^search_trunk', views.search_trunk, name='search_trunk'),
+    url(r'^search_truck', views.search_truck, name='search_truck'),
     url(r'^finish_deliver', views.finish_deliver, name='finish_deliver'),
 ]

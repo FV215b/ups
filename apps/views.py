@@ -42,7 +42,7 @@ def home(request):
     for tracking in Tracking.objects.all():
         tracking.strStatus = getStatus(tracking)
         trackings.append(tracking)
-    print(trackings)
+    # print(trackings)
     return render(request, "apps/all_list.html", {"trackings":trackings})
 
 def tracking_detail(request, key):
@@ -72,7 +72,7 @@ def user_info(request):
             item = deepcopy(Atran);
             user_package.items.append(item)
         user_packages.append(user_package)
-    print(user_packages)
+    # print(user_packages)
     return render(request, "apps/user_info.html", {"packages":user_packages})
 
 @login_required
@@ -108,7 +108,7 @@ def admin_map(request):
     trunks = []
     for temp_trunk in temp_trunks:
         trunk = deepcopy(temp_trunk)
-        trunk.strStatus = "Trunk id: " + str(trunk.trunk_id) + "  "+ intToStatus(trunk.status)
+        trunk.strStatus = "Truck id: " + str(trunk.trunk_id) + "  "+ intToStatus(trunk.status)
         trunks.append(trunk)
 
     temp_warehouses = Warehouse.objects.all()
@@ -136,8 +136,8 @@ def request_pickup(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     tracking = Tracking()
-    if "shipid" in body:
-        tracking.tracking_id = body["shipid"]
+    if "ship_id" in body:
+        tracking.tracking_id = body["ship_id"]
     if "whid" in body:
         tracking.warehouse_id = body["whid"]
     if "x" in body:
@@ -145,7 +145,13 @@ def request_pickup(request):
     if "y" in body:
         tracking.to_y = body["y"]
     if ("upsAccount" in body) and (User.objects.filter(username=body["upsAccount"]).exists()):
-        tracking.user = User.objects.get(username=body["upsAccount"])
+        user = User.objects.get(username=body["upsAccount"])
+        tracking.user = user
+        balance = user.balance.all()[0] #get the balance for this user
+        if balance.balance >= 5:
+            balance.balance -= 5
+            balance.save()
+            tracking.is_prime = True
     tracking.save()
     if "products" in body:
         for product_json in body["products"]:
@@ -154,7 +160,7 @@ def request_pickup(request):
             product.count = product_json["count"]
             product.items_detail = product_json["description"]
             product.save()
-    return JsonResponse({'tracking_id': body["shipid"]})
+    return JsonResponse({'tracking_id': body["ship_id"], "is_prime": tracking.is_prime})
 
 @csrf_exempt
 def initial_trunks(request):
@@ -171,7 +177,7 @@ def find_best_trunk(x, y):
     return best_trunk
 
 @csrf_exempt
-def search_trunk(request):
+def search_truck(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     tracking = Tracking.objects.get(tracking_id=body["tracking_id"])
@@ -188,15 +194,15 @@ def search_trunk(request):
         tracking.assigned_trunk = True
         tracking.trunk_id = trunk.trunk_id
         tracking.save()
-        return JsonResponse({'trunk_id': trunk.trunk_id, "is_prime": tracking.is_prime})
+        return JsonResponse({'truck_id': trunk.trunk_id, "tracking_id": tracking.tracking_id, "warehouse_id": tracking.warehouse_id})
     else:
-        return JsonResponse({'trunk_id': -1, "is_prime": tracking.is_prime})
+        return JsonResponse({'truck_id': -1, "tracking_id": -1, "warehouse_id": -1})
 
 @csrf_exempt
 def arrive_warehouse(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk = Trunk.objects.get(trunk_id=body["truck_id"])
     trunk.status = 2
     trunk.last_x = body["x"]
     trunk.last_y = body["y"]
@@ -207,23 +213,23 @@ def arrive_warehouse(request):
         warehouse.x = body["x"]
         warehouse.y = body["y"]
         warehouse.save()
-    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": tracking.tracking_id ,'warehouse_id': tracking.warehouse_id})
+    return JsonResponse({"truck_id": body["truck_id"], "tracking_id": tracking.tracking_id ,'warehouse_id': tracking.warehouse_id})
 
 @csrf_exempt
 def request_deliver(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk = Trunk.objects.get(trunk_id=body["truck_id"])
     trunk.status = 3
     trunk.save()
     tracking = Tracking.objects.get(tracking_id=trunk.tracking_id)
-    return JsonResponse({"trunk_id": body["trunk_id"], "tracking_id": tracking.tracking_id, "to_x": tracking.to_x, "to_y": tracking.to_y})
+    return JsonResponse({"truck_id": body["truck_id"], "tracking_id": tracking.tracking_id, "to_x": tracking.to_x, "to_y": tracking.to_y})
 
 @csrf_exempt
 def finish_deliver(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    trunk = Trunk.objects.get(trunk_id=body["trunk_id"])
+    trunk = Trunk.objects.get(trunk_id=body["truck_id"])
     trunk.status = 0
     trunk.last_x = body["x"]
     trunk.last_y = body["y"]

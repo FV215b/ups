@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>You can see all trunks and warehouses here </h1>
+<h1>You can see all trucks and warehouses here </h1>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <div id="myDiv" style="width: 1200px; height: 1000px;"><!-- Plotly chart will be drawn inside this DIV --></div>
@@ -8,7 +8,7 @@
     var trace1 = {
         mode: 'markers',
         type: 'scatter',
-        name: 'Trunk',
+        name: 'Truck',
         marker: { size: 12 }
     };
     trace1.x = [];

@@ -8,10 +8,6 @@
 {% for package in packages%}
 <h4>trackingId: {{package.tracking_id}}     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  status: {{package.strStatus}}
 {% if package.is_prime%}&nbsp&nbsp&nbsp(Prime) {%endif%}</h4>
-{% if not package.is_prime and package.strStatus != "delivered" and package.strStatus != "out for delivery" %} <form method="POST" action="{% url 'apps:add_prime' package.tracking_id%}">
-        {% csrf_token %}<input class="btn btn-success" type="submit" value="Buy Prime"/>
-    </form>
-    {% endif %}
 
 to arrive: ({{package.to_x}}, {{package.to_y}}) <br/>
 <h4>items:</h4>
@@ -20,7 +16,7 @@ to arrive: ({{package.to_x}}, {{package.to_y}}) <br/>
 {% endfor %}
 <br/>
 {% if package.strStatus != "created" %}
-trunk id: {{package.trunk_id}}<br/>
+truck id: {{package.trunk_id}}<br/>
 {% endif %}
 {% if package.strStatus != "delivered" and package.strStatus != "out for delivery"%}
 <form method="POST" action="{% url 'apps:change_destination' package.tracking_id%}">
