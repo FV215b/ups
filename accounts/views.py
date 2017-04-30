@@ -12,15 +12,27 @@ def signup(request):
         else:
             try:
                 User.objects.get(username = request.POST["username"])
-                return render(request, "accounts/signup.html", {"message": "username has already been taken, try another one"})
+                return render(request, "accounts/signup.html", {"message": "username has already been taken, try another one", "refer_account":refer_account})
             except User.DoesNotExist:
                 user = User.objects.create_user(request.POST["username"], password=request.POST["password1"], email=request.POST["e_mail"])
                 balance = user.balance.create()
-                balance.balance = 1000
+                balance.balance = int(request.POST["balance"])
+                if "refer_account" in request.POST:
+                    balance.balance = balance.balance + 5
+                    if User.objects.filter(username = request.POST["refer_account"]):
+                        refer_user = User.objects.get(username = request.POST["refer_account"])
+                        refer_user_balance = refer_user.balance.all()[0]
+                        refer_user_balance.balance += 5
+                        refer_user_balance.save()
                 balance.save()
                 login(request, user)
                 return render(request, "accounts/signup.html")
     else:
+        full_url = (request.build_absolute_uri())
+        if (full_url.find("/?account=") != -1):
+            refer_account = full_url[(full_url.find("/?account=") + len("/?account=")) :]
+            if User.objects.filter(username = refer_account):
+                return render(request, "accounts/signup.html", {"refer_account":refer_account})
         return render(request, "accounts/signup.html")
 
 def Login(request):

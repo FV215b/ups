@@ -16,6 +16,8 @@
       <input class="btn btn-primary" type="submit" value="Redeem!"/>
     </form>
     {% if message %}
-    {{message}}
+        {{message}}
     {% endif %}
+    <h4>Your refer link:</h4>
+    http://localhost:8000/accounts/signup/?account={{user.username}}
 {% endblock %}

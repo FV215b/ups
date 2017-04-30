@@ -4,6 +4,12 @@
     {% if message %}
         <h1>{{message}}</h1>
     {% endif %}
+    {% if refer_account %}
+    <h4>{{refer_account}} refers you in UPS!!</h4>
+    Both you and {{refer_account}} will get $5 in your accounts
+    <br/>
+    {% endif %}
+    <br/>
     <form method="POST" action="{% url 'accounts:SignUp' %}">
         {% csrf_token %}
         Username:
@@ -25,6 +31,9 @@
         Initial Balance:
         <br />
         <input type="number" name="balance" required/>
+        {% if refer_account %}
+            <input type="hidden" name="refer_account" value="{{refer_account}}"/>
+        {% endif %}
         <br />
         <br />
         <input class="btn btn-primary" type="submit" value="Sign Up"/>
