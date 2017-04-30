@@ -8,6 +8,8 @@ urlpatterns = [
     url(r'^user_info/', views.user_info, name='user_info'),
     url(r'^change_destination/(?P<id>[0-9]+)', views.change_destination, name='change_destination'),
     url(r'^add_prime/(?P<id>[0-9]+)', views.add_prime, name='add_prime'),
+    url(r'^get_redeem', views.get_redeem, name='get_redeem'),
+
 
     #connect to deamon
     url(r'^request_pickup', views.request_pickup, name='request_pickup'),

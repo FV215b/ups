@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .models import Trunk
+from .models import Trunk, Redeem
 from .models import AmazonTransaction
 from .models import Tracking, Warehouse
 from django.contrib.auth.models import User
@@ -130,6 +130,22 @@ def add_prime(request, id):
             tracking.is_prime = True
             tracking.save()
     return redirect("user_info")
+
+@login_required
+def get_redeem(request):
+    user = request.user
+    if request.method == "POST":
+        input_code = request.POST["code"]
+        if Redeem.objects.filter(code=input_code):
+            balance = request.user.balance.all()[0]
+            redeem = Redeem.objects.get(code=input_code)
+            balance.balance += redeem.amount
+            balance.save()
+            redeem.delete()
+            return render(request, "accounts/account_detail.html", {"user":request.user, "amount":request.user.balance.all()[0].balance})
+        else:
+            return render(request, "accounts/account_detail.html", {"user":request.user, "amount":request.user.balance.all()[0].balance, "message":"the code is not valid"})
+
 
 @csrf_exempt
 def request_pickup(request):

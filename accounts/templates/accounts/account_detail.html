@@ -9,4 +9,13 @@
       <input type="number" name="charge_amount" style="width:70px;" required/>&nbsp&nbsp
       <input class="btn btn-primary" type="submit" value="add to account"/>
     </form>
+    <br/><br/><br/>
+    <form method="POST" action="{% url 'apps:get_redeem' %}">
+      {% csrf_token %}
+      <input type="text" name="code" style="width:100px;" required/>&nbsp&nbsp
+      <input class="btn btn-primary" type="submit" value="Redeem!"/>
+    </form>
+    {% if message %}
+    {{message}}
+    {% endif %}
 {% endblock %}

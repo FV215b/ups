@@ -13,6 +13,16 @@ class Warehouse(models.Model):
         warehouse = cls(warehouse_id=warehouse_id)
         return warehouse
 
+class Redeem(models.Model):
+    code = models.CharField(max_length=20)
+    amount = models.IntegerField(default=5)
+
+    def __str__(self):
+        return (self.code)
+    @classmethod
+    def create(cls, code):
+        redeem = cls(code=code)
+        return redeem
 
 class Trunk(models.Model):
     trunk_id = models.IntegerField()
