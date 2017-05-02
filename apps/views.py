@@ -151,11 +151,12 @@ def get_redeem(request):
 def request_pickup(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
+    #print(body)
     tracking = Tracking()
     if "ship_id" in body:
         tracking.tracking_id = body["ship_id"]
-    if "whid" in body:
-        tracking.warehouse_id = body["whid"]
+    if "warehouse_id" in body:
+        tracking.warehouse_id = body["warehouse_id"]
     if "x" in body:
         tracking.to_x = body["x"]
     if "y" in body:
