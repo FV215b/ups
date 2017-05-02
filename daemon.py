@@ -11,9 +11,10 @@ from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _EncodeVarint
 
 buff_len = 1024
-sim_speed = 100000000
+sim_speed = 40000
 
-world_host = "10.236.48.21"
+#world_host = "10.236.48.21"
+world_host = "10.190.82.210"
 world_port = 12345
 
 amazon_host = ""
@@ -47,17 +48,16 @@ def listenWorld(world_sock, amazon_sock):
         print(respMsg)
         (length, pos) = _DecodeVarint32(respMsg, 0)
         print("Message length: %s\nMessage start at %s" %(length, pos))
-        uresp.ParseFromString(respMsg[pos:])
+        uresp.ParseFromString(respMsg[pos:pos+length])
         print(uresp)
         if uresp.HasField("error"):
             print(uresp.error)
         elif len(uresp.delivered) != 0:
             #it's a per-deliver response
-            print("into delivered...")
+            print("Into delivered...")
             #print(uresp)
         elif len(uresp.completions) != 0:
             #it's a completion response
-            print("into completions...")
             for comp in uresp.completions:
                 dic = {}
                 dic["truck_id"] = comp.truckid
@@ -65,6 +65,7 @@ def listenWorld(world_sock, amazon_sock):
                 dic["y"] = comp.y
                 if comp.truckid in l_on_pickup:
                     #it's a pickup completion
+                    print("Into pickup completions...")
                     l_on_pickup.pop(l_on_pickup.index(comp.truckid))
                     response = requests.post(arrive_warehouse, json=dic)
                     resp_dic = response.json()
@@ -72,17 +73,11 @@ def listenWorld(world_sock, amazon_sock):
                     upsresponse.resp_truck.truckid = resp_dic["truck_id"]
                     upsresponse.resp_truck.whnum = resp_dic["warehouse_id"]
                     upsresponse.resp_truck.shipid = resp_dic["tracking_id"]
-                    serialMsg = sendMsg(amazon_sock, upsresponse)
-                    #serialMsg = upsresponse.SerializeToString()
-                    #print("=======Serialized message=======")
-                    #print(serialMsg)
+                    #serialMsg = sendMsg(amazon_sock, upsresponse)
+                    serialMsg = upsresponse.SerializeToString()
                     #_EncodeVarint(amazon_sock.send, len(serialMsg))
-                    #amazon_sock.send(serialMsg)
-                    #print("Command has sent")
-                    #upsreparse = ua_pb2.UPSResponses()
-                    #upsreparse.ParseFromString(serialMsg)
-                    #print("=======Reparse UPSresponse=======")
-                    #print(upsreparse)
+                    amazon_sock.send(serialMsg)
+                    print("Command has sent")
                 elif comp.truckid in l_on_delivery:
                     #it's a delivery completion
                     l_on_delivery.pop(l_on_delivery.index(comp.truckid))
@@ -92,7 +87,7 @@ def listenWorld(world_sock, amazon_sock):
                 else:
                     print("Doesn't have truck %s's record" %(comp.truckid))
         else:
-            print("Response format error!")
+            print("Response is empty")
 
 def connectToWorld(sock):
     uconnect = ups_pb2.UConnect()
@@ -103,7 +98,7 @@ def connectToWorld(sock):
     print(respMsg)
     (length, pos) = _DecodeVarint32(respMsg, 0)
     print("Message length: %s\nMessage start at %s" %(length, pos))
-    uconnected.ParseFromString(respMsg[pos:])
+    uconnected.ParseFromString(respMsg[pos:pos+length])
     print(uconnected)
     if uconnected.HasField("error"):
         return False
@@ -227,7 +222,7 @@ if __name__ == '__main__':
         print(amazonRequestMsg)
         (length, pos) = _DecodeVarint32(amazonRequestMsg, 0)
         print("Message length: %s\nMessage start at %s" %(length, pos))
-        acommands.ParseFromString(amazonRequestMsg[pos:])
+        acommands.ParseFromString(amazonRequestMsg[pos:pos+length])
         
         if acommands.HasField("req_ship"):
             shipRequest(acommands.req_ship)
